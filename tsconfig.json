@@ -15,8 +15,8 @@
     "hideGenerator": true,
     "hideBreadcrumbs": true,
     "exclude": [
-      "index.ts",
-      "**/index.ts"
+      //"index.ts",
+      //"**/index.ts"
     ],
     "excludeNotExported": true,
   }

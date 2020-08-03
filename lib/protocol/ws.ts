@@ -10,7 +10,7 @@ import { tryParseJSON, parseEndpoint } from '../utility';
 
 /** Creates an ```express-ws``` middleware function to handle new WebSocket connections. Receives messages in the form of an object whose keys represent endpoints in the format 'METHOD /path' and whose values are objects containing the arguments to be passed to the associated endpoint.
  */
-const ws = (
+export default (
   router: Router,
   callback: Function,
   accept: Array<string> | Promise<Array<string>> = [],
@@ -125,5 +125,3 @@ const ws = (
     return newClient(socket, req);
   };
 };
-
-export default ws;
