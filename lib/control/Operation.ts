@@ -58,7 +58,7 @@ export default class Operation extends Callable {
       return result;
     });
 
-    this.query = routeToPath(path, args, true);
+    this.query = isRead ? routeToPath(path, args, true) : null;
     this.isCacheable = isCacheable && isRead;
     this.dependents = isRead ? [] : [path, ...dependents];
     this.dependencies = isRead ? [path, ...dependencies] : [];

@@ -14,10 +14,6 @@
     "mode": "modules",
     "hideGenerator": true,
     "hideBreadcrumbs": true,
-    "exclude": [
-      //"index.ts",
-      //"**/index.ts"
-    ],
     "excludeNotExported": true,
   }
 }

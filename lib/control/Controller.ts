@@ -66,21 +66,25 @@ export default class Controller extends Callable {
         return bound(validated);
       }
 
-      const path = routeToPath(this.pattern, validated);
-      const dependents = this.dependents.map((pattern) => routeToPath(pattern, validated));
-      const dependencies = this.dependencies.map((pattern) => routeToPath(pattern, validated));
+      try {
+        const path = routeToPath(this.pattern, validated);
+        const dependents = this.dependents.map((pattern) => routeToPath(pattern, validated));
+        const dependencies = this.dependencies.map((pattern) => routeToPath(pattern, validated));
 
-      const op = new Operation(
-        path,
-        bound,
-        validated,
-        this.isRead,
-        this.isCacheable,
-        dependents,
-        dependencies
-      );
+        const op = new Operation(
+          path,
+          bound,
+          validated,
+          this.isRead,
+          this.isCacheable,
+          dependents,
+          dependencies
+        );
 
-      return Manager.access().execute(op);
+        return Manager.access().execute(op);
+      } catch (err) {
+        return State.INTERNAL_SERVER_ERROR(err.toString());
+      }
     });
   }
 

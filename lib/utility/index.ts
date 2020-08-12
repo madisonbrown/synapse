@@ -72,7 +72,7 @@ export const mergePaths = (...paths) => {
   return result || '/';
 };
 
-export const parseEndpoint = (endpoint: string, custom: Array<string> = [], root: string = '/') => {
+export const parseEndpoint = (endpoint: string, custom: Array<string> = []) => {
   if (!endpoint || typeof endpoint !== 'string') {
     return {};
   }
@@ -80,7 +80,6 @@ export const parseEndpoint = (endpoint: string, custom: Array<string> = [], root
   let [method, path, _flags] = endpoint.split(' ');
 
   method = method.toLowerCase();
-  path = mergePaths(root, path);
 
   const standard = ['get', 'post', 'put', 'patch', 'delete', 'options'];
   if (!standard.includes(method) && !custom.includes(method)) {
@@ -99,6 +98,11 @@ export const routeToPath = (route: string, args: object, query: boolean = false)
   route.split('/').forEach((seg) => {
     if (seg[0] === ':') {
       const key = seg.substr(1);
+
+      if (args[key] === undefined) {
+        throw new Error(`Unable to resolve pattern '${route}'. Missing parameter '${key}'.`);
+      }
+
       segs.push(args[key]);
       delete data[key];
     } else {

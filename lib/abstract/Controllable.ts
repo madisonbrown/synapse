@@ -8,28 +8,44 @@ import Router from '../control/Router';
 import Schema from '../Schema';
 import { mergePaths, parseEndpoint, invokeChain } from '../utility';
 
+const resolvePath = (root: string, path: string, allowAbsolute: boolean) => {
+  if (!path) {
+    return root;
+  }
+  if (path[0] === '/') {
+    return allowAbsolute ? path : undefined;
+  }
+  return mergePaths(root, path[0] === '.' ? path.substr(1) : `/${path}`);
+};
+
 const toController = (target: Function, props: object = {}) => {
   return Object.assign(target instanceof Controller ? target : new Controller(target), props);
 };
 
 const applyEndpoint = (Class: any, pattern: string, target: Function) => {
   const custom = ['read', 'write'];
-  const { method, path, flags } = parseEndpoint(pattern, custom, Class.root());
+  const { method, path: relPath, flags } = parseEndpoint(pattern, custom);
 
-  if (!method || !path) {
+  if (!method || !relPath) {
     throw new Error(`Invalid pattern '${pattern}'.`);
+  }
+
+  const absPath = resolvePath(Class.root(), relPath, false);
+
+  if (!absPath) {
+    throw new Error(`Unexpected absolute path '${pattern}'.`);
   }
 
   if (custom.includes(method)) {
     return toController(target, {
-      pattern: path,
+      pattern: absPath,
       isRead: method === 'read',
       isCacheable: !flags.includes('nocache'),
     });
   }
 
   const controller = toController(target, {
-    pattern: path,
+    pattern: absPath,
     isRead: method === 'get',
     isCacheable: !flags.includes('nocache'),
   });
@@ -66,14 +82,14 @@ const applyInstance = (Class: any, from: Function, target: Function) => {
 const applyUses = (Class: any, paths: Array<string>, target: Function) => {
   const root = Class.root();
   return toController(target, {
-    dependencies: paths.map((path) => mergePaths(root, path)),
+    dependencies: paths.map((path) => resolvePath(root, path, true)),
   });
 };
 
 const applyAffects = (Class: any, paths: Array<string>, target: Function) => {
   const root = Class.root();
   return toController(target, {
-    dependents: paths.map((path) => mergePaths(root, path)),
+    dependents: paths.map((path) => resolvePath(root, path, true)),
   });
 };
 

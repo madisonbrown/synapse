@@ -14,7 +14,7 @@
     "doc": "typedoc",
     "start": "NODE_ENV=production node ./build/test/index.js",
     "dev": "NODE_ENV=development nodemon",
-    "deploy": "git add . && npm version $1 && git push --tags && npm publish"
+    "deploy": "git add . && git commit -m 'deploy' && npm version $1 && git push --tags && npm publish"
   },
   "repository": {
     "type": "git",
