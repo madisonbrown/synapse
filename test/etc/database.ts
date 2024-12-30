@@ -2,7 +2,7 @@
 /* eslint-disable import/extensions */
 
 import * as mongoose from 'mongoose';
-import { MONGO_URI } from './secrets';
+const MONGO_URI = '';
 
 const options = {
   useNewUrlParser: true,

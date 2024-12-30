@@ -10,7 +10,7 @@
   "typedocOptions": {
     "name": "synapse",
     "inputFiles": "lib",
-    "out": "../docs/docs/reference",
+    "out": "docs",
     "mode": "modules",
     "hideGenerator": true,
     "hideBreadcrumbs": true,
