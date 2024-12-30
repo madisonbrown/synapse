@@ -1,15 +1,19 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
     "target": "ES6",
-    "module": "commonjs",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "sourceMap": true,
     "declaration": true,
-    "outDir": "./build",
-    "rootDir": "./",
-    "experimentalDecorators": true
+    "declarationMap": true,
+    "noImplicitAny": true,
+    "strict": true
   },
+  "exclude": ["example"],
   "typedocOptions": {
     "name": "synapse",
-    "inputFiles": "lib",
+    "inputFiles": "src",
     "out": "docs",
     "mode": "modules",
     "hideGenerator": true,

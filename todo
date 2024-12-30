@@ -1,0 +1,9 @@
+- unauthenticated endpoints
+- field casting
+- schema optional fields
+- ctx type mismatch
+- custom express app
+- nested schemas
+- relative paths?
+- event safety
+- rewrite documentation
